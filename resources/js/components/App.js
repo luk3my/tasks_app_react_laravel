@@ -9,7 +9,8 @@ class App extends Component {
   constructor(props) {
       super(props);
       this.state = {
-        task: ''
+        task: '',
+        tasksList: []
       };
       //bind
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +19,14 @@ class App extends Component {
 
   handleSubmit(e) {
       e.preventDefault();
-      this.postData();
+      // this.postData();
+      axios.post('/posts', {
+        task: this.state.task
+      }).then(response => {
+        this.setState({
+          tasksList: [response.data]
+        })
+      });
   }
 
   postData() {
@@ -59,18 +67,10 @@ class App extends Component {
                     <th>Status</th>
                     <th>Added By</th>
                     <th>Created</th>
-                    <th> </th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Wash Car</td>
-                    <td>Incomplete</td>
-                    <td>Luke</td>
-                    <td>12/4/20</td>
-                    <td>Edit</td>
-                  </tr>
+                <tbody>                              
+                    {this.state.tasksList.map(task => <tr key={task.id}><td>{task.id}</td><td>{task.task}</td><td>{task.status}</td><td>{task.user.name}</td><td>{task.created_at}</td></tr>)}                                   
                 </tbody>
               </Table>
             </div>
