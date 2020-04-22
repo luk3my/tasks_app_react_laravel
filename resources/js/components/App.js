@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 // import {Table} from "react-bootstrap/Table";
@@ -7,14 +8,29 @@ class App extends Component {
 
   constructor(props) {
       super(props);
-      this.state = {};
+      this.state = {
+        task: ''
+      };
       //bind
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(e) {
       e.preventDefault();
-      console.log('posted');
+      this.postData();
+  }
+
+  postData() {
+    axios.post('/posts', {
+      task: this.state.task
+    });
+  }
+
+  handleChange(e) {
+    this.setState({
+      task: e.target.value
+    });
   }
 
   render() {
@@ -30,7 +46,7 @@ class App extends Component {
             </Button>
             <form onSubmit={this.handleSubmit} style={{'marginBottom' : '50px'}}>
               <div className="form-group">
-                <input className="form-control" id="task" placeholder="Enter a task to be completed" />
+                <input onChange={this.handleChange} className="form-control" id="task" placeholder="Enter a task to be completed" />
               </div>
               <input type="submit" value="Post" className="form-control" />
             </form>
