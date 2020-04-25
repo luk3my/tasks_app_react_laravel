@@ -19,7 +19,9 @@ Auth::routes();
 //Create a group of routes that are protected by the auth middleware - must be authenticated to view
 Route::group(['middleware' => ['auth']], function() {
      Route::get('/', 'TasksIndexController@index');   
+     Route::post('/posts', 'PostController@create');
+     Route::get('/posts', 'PostController@index');
 });
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
