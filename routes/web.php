@@ -20,6 +20,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function() {
      Route::get('/', 'TasksIndexController@index');   
      Route::post('/posts', 'PostController@create');
+     Route::get('/posts', 'PostController@index');
 });
 Auth::routes();
 

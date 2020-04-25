@@ -16,6 +16,14 @@ class App extends Component {
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
   }
+  
+  componentDidMount() {
+    axios.get('/posts').then(response => {
+      this.setState({
+         tasksList: response.data
+      })
+    })
+  }
 
   handleSubmit(e) {
       e.preventDefault();
@@ -65,12 +73,20 @@ class App extends Component {
                     <th>ID</th>
                     <th>Task</th>
                     <th>Status</th>
-                    <th>Added By</th>
+                     <th>Added By</th> 
                     <th>Created</th>
                   </tr>
                 </thead>
                 <tbody>                              
-                    {this.state.tasksList.map(task => <tr key={task.id}><td>{task.id}</td><td>{task.task}</td><td>{task.status}</td><td>{task.user.name}</td><td>{task.created_at}</td></tr>)}                                   
+                    {(this.state.tasksList.length > 0) ? this.state.tasksList.map(task => (
+                      <tr key={task.id}>
+                        <td>{task.id}</td>
+                        <td>{task.task}</td>
+                        <td>{task.status}</td>
+                        <td>{task.user_id}</td> 
+                        <td>{task.created_at}</td>
+                      </tr>
+                      )) : <tr><td colSpan="5">There are no tasks to show</td></tr>}                                   
                 </tbody>
               </Table>
             </div>

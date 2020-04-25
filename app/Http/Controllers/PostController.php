@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
+    public function index() {
+        $tasks = Task::all()->toArray();
+        return $tasks;
+        }
+
     public function create(Request $request, Task $task) {
         //Create new post in DB
         $createdPost = $request->user()->tasks()->create([
