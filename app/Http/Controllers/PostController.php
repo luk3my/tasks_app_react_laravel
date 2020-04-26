@@ -9,7 +9,10 @@ class PostController extends Controller
 {
 
     public function index() {
-        $tasks = Task::all()->toArray();
+        $tasks = \DB::table('tasks')->join('users', 'user_id', '=', 'users.id')->select('tasks.*', 'users.name')->orderByRaw('tasks.id ASC')->get();
+        foreach($tasks as $task) {
+         $task->user = (object) array("name"   => $task->name,);
+        }
         return $tasks;
         }
 
