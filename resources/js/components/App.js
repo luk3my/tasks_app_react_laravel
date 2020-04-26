@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import StatusLabel from './StatusLabel'
 import axios from 'axios';
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
@@ -53,13 +54,7 @@ class App extends Component {
     return (
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-md-10">
-            <Button
-              variant="primary"
-              style={{ float: "right", marginBottom: "15px" }}
-            >
-              Add Task
-            </Button>
+          <div className="col-md-10">         
             <form onSubmit={this.handleSubmit} style={{'marginBottom' : '50px'}}>
               <div className="form-group">
                 <input onChange={this.handleChange} className="form-control" id="task" placeholder="Enter a task to be completed" />
@@ -75,6 +70,7 @@ class App extends Component {
                     <th>Status</th>
                      <th>Added By</th> 
                     <th>Created</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>                              
@@ -82,9 +78,13 @@ class App extends Component {
                       <tr key={task.id}>
                         <td>{task.id}</td>
                         <td>{task.task}</td>
-                        <td>{task.status}</td>
+                        <td><StatusLabel status={task.status}></StatusLabel></td>
                         <td>{task.user.name}</td> 
                         <td>{task.created_at}</td>
+                        <td> <Button variant="primary" style={{'marginRight': '10px'}}>Edit</Button> 
+                             <Button variant="success" style={{'marginRight': '10px'}}>&#x2713;</Button>
+                             <Button variant="danger">X</Button>
+                        </td>
                       </tr>
                       )) : <tr><td colSpan="5">There are no tasks to show</td></tr>}                                   
                 </tbody>
