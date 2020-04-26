@@ -32,7 +32,7 @@ class App extends Component {
         task: this.state.task
       }).then(response => {
         this.setState({
-          tasksList: [response.data]
+          tasksList: [...this.state.tasksList, response.data]
         })
       });
   }
@@ -83,7 +83,7 @@ class App extends Component {
                         <td>{task.id}</td>
                         <td>{task.task}</td>
                         <td>{task.status}</td>
-                        <td>{task.user_id}</td> 
+                        <td>{task.user.name}</td> 
                         <td>{task.created_at}</td>
                       </tr>
                       )) : <tr><td colSpan="5">There are no tasks to show</td></tr>}                                   
