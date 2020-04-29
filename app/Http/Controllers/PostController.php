@@ -32,4 +32,10 @@ class PostController extends Controller
         return response()->json($task_id);
     }
 
+    public function complete(Request $request, Task $task) {
+        $task_id = $request->all()['task_id'];
+        \DB::table('tasks')->where('id', $task_id)->update(['status' => 'Complete']);
+        return response()->json($task_id);
+    }
+
 }

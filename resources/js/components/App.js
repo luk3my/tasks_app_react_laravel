@@ -48,7 +48,7 @@ class App extends Component {
     });
   }
 
-  delete_task(taskId) {
+  deleteTask(taskId) {
     axios
       .post("/posts/delete", {
         task_id: taskId
@@ -60,6 +60,31 @@ class App extends Component {
           )
         });
       });
+  }
+
+   completeTask(taskId) {
+    axios
+      .post("/posts/complete", {
+        task_id: taskId
+      })
+      .then(response => {
+        this.state.tasksList.map(task => {
+          if (task.id === taskId) {
+            task.status = 'Complete'
+          }
+        })   
+         this.setState({
+          tasksList: this.state.tasksList
+        }); 
+      });
+  }
+
+  renderDisabled(status) {
+    if (status === 'Complete') {
+      return true
+    } else {
+      return false
+    }
   }
 
   render() {
@@ -113,12 +138,14 @@ class App extends Component {
                           <Button
                             variant="success"
                             style={{ marginRight: "10px" }}
+                            onClick={() => this.completeTask(task.id)}
+                            disabled={this.renderDisabled(task.status)}
                           >
                             &#x2713;
                           </Button>
                           <Button
                             variant="danger"
-                            onClick={() => this.delete_task(task.id)}
+                            onClick={() => this.deleteTask(task.id)}
                           >
                             X
                           </Button>
