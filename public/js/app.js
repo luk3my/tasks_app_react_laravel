@@ -66461,7 +66461,7 @@ var App = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      task: '',
+      task: "",
       tasksList: []
     }; //bind
 
@@ -66475,7 +66475,7 @@ var App = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/posts').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/posts").then(function (response) {
         _this2.setState({
           tasksList: response.data
         });
@@ -66486,15 +66486,17 @@ var App = /*#__PURE__*/function (_Component) {
     value: function handleSubmit(e) {
       var _this3 = this;
 
-      e.preventDefault(); // this.postData();
-
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/posts', {
+      e.preventDefault();
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/posts", {
         task: this.state.task
       }).then(function (response) {
         _this3.setState({
-          task: '',
+          task: "",
           tasksList: [].concat(_toConsumableArray(_this3.state.tasksList), [response.data])
         });
+      });
+      this.setState({
+        task: ""
       });
     }
   }, {
@@ -66505,11 +66507,11 @@ var App = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "delete_task",
-    value: function delete_task(taskId) {
+    key: "deleteTask",
+    value: function deleteTask(taskId) {
       var _this4 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/posts/delete', {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/posts/delete", {
         task_id: taskId
       }).then(function (response) {
         _this4.setState({
@@ -66520,9 +66522,37 @@ var App = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "completeTask",
+    value: function completeTask(taskId) {
+      var _this5 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/posts/complete", {
+        task_id: taskId
+      }).then(function (response) {
+        _this5.state.tasksList.map(function (task) {
+          if (task.id === taskId) {
+            task.status = 'Complete';
+          }
+        });
+
+        _this5.setState({
+          tasksList: _this5.state.tasksList
+        });
+      });
+    }
+  }, {
+    key: "renderDisabled",
+    value: function renderDisabled(status) {
+      if (status === 'Complete') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
@@ -66533,12 +66563,13 @@ var App = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit,
         style: {
-          'marginBottom': '50px'
+          marginBottom: "50px"
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: this.handleChange,
+        value: this.state.task,
         className: "form-control",
         id: "task",
         placeholder: "Enter a task to be completed"
@@ -66560,17 +66591,21 @@ var App = /*#__PURE__*/function (_Component) {
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, task.user.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, task.created_at), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
           variant: "primary",
           style: {
-            'marginRight': '10px'
+            marginRight: "10px"
           }
         }, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
           variant: "success",
           style: {
-            'marginRight': '10px'
-          }
+            marginRight: "10px"
+          },
+          onClick: function onClick() {
+            return _this6.completeTask(task.id);
+          },
+          disabled: _this6.renderDisabled(task.status)
         }, "\u2713"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
           variant: "danger",
           onClick: function onClick() {
-            return _this5.delete_task(task.id);
+            return _this6.deleteTask(task.id);
           }
         }, "X")));
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
