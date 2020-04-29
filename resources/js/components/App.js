@@ -33,21 +33,26 @@ class App extends Component {
         task: this.state.task
       }).then(response => {
         this.setState({
+          task: '',
           tasksList: [...this.state.tasksList, response.data]
         })
       });
-  }
-
-  postData() {
-    axios.post('/posts', {
-      task: this.state.task
-    });
   }
 
   handleChange(e) {
     this.setState({
       task: e.target.value
     });
+  }
+
+  delete_task(taskId) {
+    axios.post('/posts/delete', {
+      task_id: taskId
+    }).then(response => {
+      this.setState({
+        tasksList: this.state.tasksList.filter(task => task.id !== response.data)
+      })
+    })
   }
 
   render() {
@@ -83,10 +88,10 @@ class App extends Component {
                         <td>{task.created_at}</td>
                         <td> <Button variant="primary" style={{'marginRight': '10px'}}>Edit</Button> 
                              <Button variant="success" style={{'marginRight': '10px'}}>&#x2713;</Button>
-                             <Button variant="danger">X</Button>
+                             <Button variant="danger" onClick={() =>this.delete_task(task.id)}>X</Button>
                         </td>
                       </tr>
-                      )) : <tr><td colSpan="5">There are no tasks to show</td></tr>}                                   
+                      )) : <tr><td colSpan="6">There are no tasks to show</td></tr>}                                   
                 </tbody>
               </Table>
             </div>

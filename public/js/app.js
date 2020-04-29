@@ -66492,15 +66492,9 @@ var App = /*#__PURE__*/function (_Component) {
         task: this.state.task
       }).then(function (response) {
         _this3.setState({
+          task: '',
           tasksList: [].concat(_toConsumableArray(_this3.state.tasksList), [response.data])
         });
-      });
-    }
-  }, {
-    key: "postData",
-    value: function postData() {
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/posts', {
-        task: this.state.task
       });
     }
   }, {
@@ -66511,8 +66505,25 @@ var App = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "delete_task",
+    value: function delete_task(taskId) {
+      var _this4 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/posts/delete', {
+        task_id: taskId
+      }).then(function (response) {
+        _this4.setState({
+          tasksList: _this4.state.tasksList.filter(function (task) {
+            return task.id !== response.data;
+          })
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this5 = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -66557,10 +66568,13 @@ var App = /*#__PURE__*/function (_Component) {
             'marginRight': '10px'
           }
         }, "\u2713"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          variant: "danger"
+          variant: "danger",
+          onClick: function onClick() {
+            return _this5.delete_task(task.id);
+          }
         }, "X")));
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
-        colSpan: "5"
+        colSpan: "6"
       }, "There are no tasks to show"))))))));
     }
   }]);
