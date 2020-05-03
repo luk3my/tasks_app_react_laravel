@@ -2,6 +2,11 @@
 
 return [
 
+    'providers' => [
+    '...',
+    'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider'
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
