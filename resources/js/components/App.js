@@ -132,6 +132,7 @@ class App extends Component {
                           <Button
                             variant="primary"
                             style={{ marginRight: "10px" }}
+                            href={`/edit/${task.id}`}
                           >
                             Edit
                           </Button>
