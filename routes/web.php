@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth']], function() {
      Route::post('/posts', 'PostController@create');
      Route::post('/posts/delete', 'PostController@delete');
      Route::post('/posts/complete', 'PostController@complete');
+     Route::post('/posts/editTask', 'PostController@editTask');
 });
 Auth::routes();
 

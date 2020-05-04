@@ -28,7 +28,7 @@ class PostController extends Controller
 
     public function delete(Request $request, Task $task) {
         $task_id = $request->all()['task_id'];
-        $deleted_task = $request->user()->tasks()->where('id', $task_id)->delete();
+        \DB::table('tasks')->where('id', $task_id)->delete();
         return response()->json($task_id);
     }
 
@@ -38,5 +38,16 @@ class PostController extends Controller
         return response()->json($task_id);
     }
 
-
+    public function editTask(Request $request, Task $task) {
+        $task_id = $request->all()['taskId'];
+        $editedTask = $request->all()['task'];
+        $query = \DB::table('tasks')->where('id', $task_id)->update(['task' => $editedTask]);
+        if ($query === 1) {
+            return response()->json('success');
+        } else if ($query === 0) {
+            return response()->json('no_change');    
+        } else {
+             return response()->json('edit_failed');    
+        }
+    }
 }
