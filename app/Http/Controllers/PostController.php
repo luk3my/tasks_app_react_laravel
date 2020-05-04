@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use Auth;
 
 class PostController extends Controller
 {
 
     public function index() {
-        $tasks = \DB::table('tasks')->join('users', 'user_id', '=', 'users.id')->select('tasks.*', 'users.name')->orderByRaw('tasks.id ASC')->get();
+        $user = Auth::user();
+        $tasks = \DB::table('tasks')->join('users', 'user_id', '=', 'users.id')->select('tasks.*', 'users.name')->where('tasks.user_id', $user->id)->orderByRaw('tasks.id ASC')->get();
         foreach($tasks as $task) {
          $task->user = (object) array("name"   => $task->name,);
         }
