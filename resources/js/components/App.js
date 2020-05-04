@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import StatusLabel from "./StatusLabel";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
@@ -36,6 +38,7 @@ class App extends Component {
           task: "",
           tasksList: [...this.state.tasksList, response.data]
         });
+        toast("New task added.");        
       });
     this.setState({
       task: ""
@@ -59,6 +62,7 @@ class App extends Component {
             task => task.id !== response.data
           )
         });
+        toast("Task removed"); 
       });
   }
 
@@ -76,7 +80,12 @@ class App extends Component {
          this.setState({
           tasksList: this.state.tasksList
         }); 
+        toast("Task completed"); 
       });
+  }
+
+  editTask(taskId) {
+    window.location.href = `/edit/${taskId}`;
   }
 
   renderDisabled(status) {
@@ -102,7 +111,7 @@ class App extends Component {
                   placeholder="Enter a task to be completed"
                 />
               </div>
-              <input type="submit" value="Post" className="form-control" />
+              <input type="submit" value="Add Task" className="form-control" />
             </form>
             <div className="task_index">
               <Table striped bordered hover>
@@ -132,7 +141,8 @@ class App extends Component {
                           <Button
                             variant="primary"
                             style={{ marginRight: "10px" }}
-                            href={`/edit/${task.id}`}
+                            onClick={() => this.editTask(task.id, task.status)}
+                            disabled={this.renderDisabled(task.status)}
                           >
                             Edit
                           </Button>
@@ -163,6 +173,7 @@ class App extends Component {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
     );
   }
