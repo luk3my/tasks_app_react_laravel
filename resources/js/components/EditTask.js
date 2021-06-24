@@ -50,9 +50,9 @@ class EditTask extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="card" style={{ paddingLeft: "12%" }}>
-          <div className="col-md-10 justify-content-center card-body">
+          <div className="col-md-10 card-body">
             <div className="card-title">
               <Button
                 href={"/"}
@@ -73,7 +73,7 @@ class EditTask extends Component {
               </div>
               <input
                 type="submit"
-                value="Post"
+                value="Edit"
                 className="form-control"
                 style={{ width: "30%", float: "right" }}
               />

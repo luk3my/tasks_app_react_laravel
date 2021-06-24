@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import StatusLabel from "./StatusLabel";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
@@ -38,7 +38,7 @@ class App extends Component {
           task: "",
           tasksList: [...this.state.tasksList, response.data]
         });
-        toast("New task added.");        
+        toast("New task added.");
       });
     this.setState({
       task: ""
@@ -62,11 +62,11 @@ class App extends Component {
             task => task.id !== response.data
           )
         });
-        toast("Task removed"); 
+        toast("Task removed");
       });
   }
 
-   completeTask(taskId) {
+  completeTask(taskId) {
     axios
       .post("/posts/complete", {
         task_id: taskId
@@ -74,13 +74,13 @@ class App extends Component {
       .then(response => {
         this.state.tasksList.map(task => {
           if (task.id === taskId) {
-            task.status = 'Complete'
+            task.status = "Complete";
           }
-        })   
-         this.setState({
+        });
+        this.setState({
           tasksList: this.state.tasksList
-        }); 
-        toast("Task completed"); 
+        });
+        toast("Task completed");
       });
   }
 
@@ -89,87 +89,97 @@ class App extends Component {
   }
 
   renderDisabled(status) {
-    if (status === 'Complete') {
-      return true
+    if (status === "Complete") {
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 
   render() {
     return (
-      <div className="container">
+      <div>
         <div className="row justify-content-center">
-          <div className="col-md-10">
-            <form onSubmit={this.handleSubmit} style={{ marginBottom: "50px" }}>
-              <div className="form-group">
+          <div className="col-md-10 card">
+            <div className="card-body">
+              <h3>Add Task</h3>
+              <form
+                onSubmit={this.handleSubmit}
+                style={{ marginBottom: "50px" }}
+              >
+                <div className="form-group">
+                  <input
+                    onChange={this.handleChange}
+                    value={this.state.task}
+                    className="form-control"
+                    id="task"
+                    placeholder="Enter a task to be completed"
+                  />
+                </div>
                 <input
-                  onChange={this.handleChange}
-                  value={this.state.task}
+                  type="submit"
+                  value="Add Task"
                   className="form-control"
-                  id="task"
-                  placeholder="Enter a task to be completed"
+                  style={{ width: "30%", float: "right", 'marginBottom': '15px' }}
                 />
-              </div>
-              <input type="submit" value="Add Task" className="form-control" />
-            </form>
-            <div className="task_index">
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Task</th>
-                    <th>Status</th>
-                    <th>Added By</th>
-                    <th>Created</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.tasksList.length > 0 ? (
-                    this.state.tasksList.map(task => (
-                      <tr key={task.id}>
-                        <td>{task.id}</td>
-                        <td>{task.task}</td>
-                        <td>
-                          <StatusLabel status={task.status} />
-                        </td>
-                        <td>{task.user.name}</td>
-                        <td>{task.created_at}</td>
-                        <td>
-                          {" "}
-                          <Button
-                            variant="primary"
-                            style={{ marginRight: "10px" }}
-                            onClick={() => this.editTask(task.id, task.status)}
-                            disabled={this.renderDisabled(task.status)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="success"
-                            style={{ marginRight: "10px" }}
-                            onClick={() => this.completeTask(task.id)}
-                            disabled={this.renderDisabled(task.status)}
-                          >
-                            &#x2713;
-                          </Button>
-                          <Button
-                            variant="danger"
-                            onClick={() => this.deleteTask(task.id)}
-                          >
-                            X
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
+              </form>
+              <div className="task_index">
+                <Table striped bordered hover>
+                  <thead>
                     <tr>
-                      <td colSpan="6">There are no tasks to show</td>
+                      <th>ID</th>
+                      <th>Task</th>
+                      <th>Status</th>
+                      <th>Created</th>
+                      <th>Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {this.state.tasksList.length > 0 ? (
+                      this.state.tasksList.map(task => (
+                        <tr key={task.id}>
+                          <td>{task.id}</td>
+                          <td>{task.task}</td>
+                          <td>
+                            <StatusLabel status={task.status} />
+                          </td>
+                          <td>{task.created_at}</td>
+                          <td>
+                            {" "}
+                            <Button
+                              variant="primary"
+                              style={{ marginRight: "10px" }}
+                              onClick={() =>
+                                this.editTask(task.id, task.status)}
+                              disabled={this.renderDisabled(task.status)}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant="success"
+                              style={{ marginRight: "10px" }}
+                              onClick={() => this.completeTask(task.id)}
+                              disabled={this.renderDisabled(task.status)}
+                            >
+                              &#x2713;
+                            </Button>
+                            <Button
+                              variant="danger"
+                              onClick={() => this.deleteTask(task.id)}
+                            >
+                              X
+                            </Button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6">There are no tasks to show</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
+              </div>
             </div>
           </div>
         </div>
